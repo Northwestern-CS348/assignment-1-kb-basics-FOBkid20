@@ -54,6 +54,27 @@ class KBTest(unittest.TestCase):
         self.assertEqual(str(answer[4]), "?X : pyramid3, ?Y : red")
         self.assertEqual(str(answer[5]), "?X : pyramid4, ?Y : red")
         
+    def test6_assert_duplicate(self):
+        self.KB.kb_assert(Fact("inst sphere1 sphere"))
+        ask1 = read.parse_input("fact: (inst sphere1 sphere")
+        print(' Asdking if', ask1)
+        answer = self.KB.kb_ask(ask1)
+        self.assertTrue(answer)
+        self.KB.kb_assert(Fact("inst sphere1 sphere"))
+        # reasserting the fact will not print "Asserting Fact" again
+        ask2 = read.parse_input("fact: (inst sphere1 sphere")
+        print(' Asdking if', ask2)
+        answer = self.KB.kb_ask(ask2)
+        self.assertTrue(answer)
+
+    def test7(self):
+        ask1 = read.parse_input("fact: (color ?X blue)")
+        print(' Asking if', ask1)
+        answer = self.KB.kb_ask(ask1)
+        self.assertEqual(str(answer[0]), "?X : littlebox")
+        self.assertEqual(str(answer[1]), "?X : pyramid1")
+
+
 
 if __name__ == '__main__':
     unittest.main()
